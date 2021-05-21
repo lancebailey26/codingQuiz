@@ -13,8 +13,6 @@ highscores = JSON.parse(highscores) ?? [];
 
 highscores.sort((a, b) => b.score - a.score);  //sorts the score from high to low
 
-// figure out how to sort high to low
-
 if (highscores !== null) { //add to list
 
     for (var i = 0; i < highscores.length; i++) {

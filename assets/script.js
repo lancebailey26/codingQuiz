@@ -45,15 +45,12 @@ function startTime(event) {
     startQuiz.style.display = "none"
     questionBorder.style.border = "2px solid blue"
    
-    // Sets interval in variable
     var timerInterval = setInterval(function() {
       secondsLeft--;
       timer.textContent = "Time Left: " + secondsLeft;
-      //if question is wrong deduct 10 sec
       if(secondsLeft === 0) {
         clearInterval(timerInterval);
         endGame();
-        //function to input initials and store them + score to local storage
       }
   
     }, 1000);
@@ -87,23 +84,22 @@ function compare(event) {
 
         var wrongRight = document.createElement("div");
         wrongRight.setAttribute("id", "wrongRight");
-        // Correct condition 
         if (element.textContent == questions[questionNumber].a) {
             score++;
             wrongRight.textContent = "YEP! The answer was:  " + questions[questionNumber].a;
-            // Correct condition 
+            
         } else {
-            // Will deduct -10 seconds off secondsLeft for wrong answers
+            //deduct -10 seconds off secondsLeft for wrong answers
             secondsLeft = secondsLeft - wrongTime;
             wrongRight.textContent = "NOPE! The right answer was:  " + questions[questionNumber].a;
         }
         
     }
-    // Question Index determines number question user is on
+    // advance question
     questionNumber++;
 
     if (questionNumber >= questions.length) {
-        // All done will append last page with user stats
+       
         timer.setAttribute("class","hide")
         wrongRight.textContent = "FINISH!" + " " + "You got  " + score + "/" + questions.length + " correct.";
         submitButton.setAttribute("value", score)
