@@ -1,4 +1,3 @@
-
 var score = 0;
 var questionBorder = document.querySelector('#main-quiz')
 var startQuiz = document.querySelector("#startbutton");
@@ -10,6 +9,9 @@ var timer = document.querySelector(".timer");
 var secondsLeft = 76;
 var questionNumber = 0;
 var createUL = document.createElement("ul");
+var backButton = document.getElementById("goback");
+// var totalScore = score + secondsLeft;
+var highscores = JSON.parse(localStorage.getItem("highscores")) || [];
 var questions = [
     {
         q: "which of the following is NOT a data type?",
@@ -50,7 +52,7 @@ function startTime(event) {
       //if question is wrong deduct 10 sec
       if(secondsLeft === 0) {
         clearInterval(timerInterval);
-        //endGame();
+        endGame();
         //function to input initials and store them + score to local storage
       }
   
@@ -91,7 +93,7 @@ function compare(event) {
             wrongRight.textContent = "YEP! The answer was:  " + questions[questionNumber].a;
             // Correct condition 
         } else {
-            // Will deduct -5 seconds off secondsLeft for wrong answers
+            // Will deduct -10 seconds off secondsLeft for wrong answers
             secondsLeft = secondsLeft - wrongTime;
             wrongRight.textContent = "NOPE! The right answer was:  " + questions[questionNumber].a;
         }
@@ -102,20 +104,43 @@ function compare(event) {
 
     if (questionNumber >= questions.length) {
         // All done will append last page with user stats
-        // allDone();
+        timer.setAttribute("class","hide")
         wrongRight.textContent = "FINISH!" + " " + "You got  " + score + "/" + questions.length + " correct.";
+        submitButton.setAttribute("value", score)
+        setTimeout(endGame, 2000);        
     } else {
         answers.innerHTML = "";
         writeQuestion(questionNumber);
     }
     answers.appendChild(wrongRight);
-//  if (questionNumber < questions.length){
-//     quizQuestion.innerHTML = questions.q;
-
 }
-//  for (i = 0; i < questions.length; i++) {
+function endGame(){
+    var quizPage = document.getElementById("quiz-page");
+    quizPage.setAttribute("class", "hide");
+    var endScreen = document.getElementById("endgame");
+    endScreen.removeAttribute("class", "hide");
+    var final = document.getElementById("finalscore")
+    totalScore = score + secondsLeft;
+    final.textContent = "You got  " + score + "/" + questions.length + " correct, with " + secondsLeft + " seconds remaning, for a total score of " + totalScore + "!";
+}
+var submitButton = document.getElementById("submit"); 
+function saveScore(){
+    var initialEl = document.getElementById("initials");
+    var initials = initialEl.value.trim();
+    var scoreObj = {
+        score: totalScore,
+        initials: initials
+    }
+    console.log(highscores);
+    highscores.push(scoreObj);
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    // location.reload()
+}
 
-    // function for initials + storage
-//}
-//function endGame
+
+function goBack(){
+    window.location.reload();
+}
+submitButton.addEventListener("click", saveScore);
+backButton.addEventListener("click", goBack);
 startQuiz.addEventListener("click", startTime);

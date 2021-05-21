@@ -65,3 +65,23 @@ li {
     font-size: 30px;
     
 }
+.hide {
+    display:none;
+}
+
+/* ul{
+    background-color: black;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 50%;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+} */
+#clear{
+    margin: auto;
+}
+.endgame{
+    align-items: center;
+}
