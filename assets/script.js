@@ -10,9 +10,9 @@ var secondsLeft = 76;
 var questionNumber = 0;
 var createUL = document.createElement("ul");
 var backButton = document.getElementById("goback");
-// var totalScore = score + secondsLeft;
 var highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-var questions = [
+var submitButton = document.getElementById("submit"); 
+var questions = [ //all questions/choices/answers
     {
         q: "which of the following is NOT a data type?",
         possAnswers: ["DOM", "letter", "boolean", "number"],
@@ -40,7 +40,7 @@ var questions = [
     }
 ];
 
-function startTime(event) {
+function startTime(event) { //starts timer, adds border around question
     event.preventDefault();
     startQuiz.style.display = "none"
     questionBorder.style.border = "2px solid blue"
@@ -48,7 +48,7 @@ function startTime(event) {
     var timerInterval = setInterval(function() {
       secondsLeft--;
       timer.textContent = "Time Left: " + secondsLeft;
-      if(secondsLeft === 0) {
+      if(secondsLeft === 0) { //if timer = 0 end game
         clearInterval(timerInterval);
         endGame();
       }
@@ -57,7 +57,7 @@ function startTime(event) {
     writeQuestion();
 }
 
-function writeQuestion(){
+function writeQuestion(){ //writes question and answers
     quizQuestion.innerHTML = "";
     createUL.textContent = "";
 
@@ -73,23 +73,23 @@ function writeQuestion(){
         answers.appendChild(createUL);
         createUL.appendChild(list);
         
-        list.addEventListener("click", (compare));
+        list.addEventListener("click", (check)); //when an answer is clicked it checks if its right or wrong
     })
     
 }
-function compare(event) {
+function check(event) { //check if answer is right or wrong
     var element = event.target;
 
     if (element.matches("li")) {
 
         var wrongRight = document.createElement("div");
         wrongRight.setAttribute("id", "wrongRight");
-        if (element.textContent == questions[questionNumber].a) {
+        if (element.textContent == questions[questionNumber].a) { //if right add 1 to score value
             score++;
             wrongRight.textContent = "YEP! The answer was:  " + questions[questionNumber].a;
             
         } else {
-            //deduct -10 seconds off secondsLeft for wrong answers
+            //if wrong deduct -10 seconds off secondsLeft for wrong answers
             secondsLeft = secondsLeft - wrongTime;
             wrongRight.textContent = "NOPE! The right answer was:  " + questions[questionNumber].a;
         }
@@ -98,30 +98,30 @@ function compare(event) {
     // advance question
     questionNumber++;
 
-    if (questionNumber >= questions.length) {
+    if (questionNumber >= questions.length) { //if all questions are answered within the time limit, end the game
        
         timer.setAttribute("class","hide")
         wrongRight.textContent = "FINISH!" + " " + "You got  " + score + "/" + questions.length + " correct.";
         submitButton.setAttribute("value", score)
-        setTimeout(endGame, 2000);        
+        setTimeout(endGame, 2000);        //gives user a couple seconds to see their # correct before the end screen
     } else {
         answers.innerHTML = "";
         writeQuestion(questionNumber);
     }
     answers.appendChild(wrongRight);
 }
-function endGame(){
+function endGame(){ //hides main quiz content
     var quizPage = document.getElementById("quiz-page");
     quizPage.setAttribute("class", "hide");
     var endScreen = document.getElementById("endgame");
     endScreen.removeAttribute("class", "hide");
     var final = document.getElementById("finalscore")
-    totalScore = score + secondsLeft;
+    totalScore = score + secondsLeft; //total score is correct answers + timeleft
     final.textContent = "You got  " + score + "/" + questions.length + " correct, with " + secondsLeft + " seconds remaning, for a total score of " + totalScore + "!";
 }
-var submitButton = document.getElementById("submit"); 
+
 function saveScore(){
-    var initialEl = document.getElementById("initials");
+    var initialEl = document.getElementById("initials"); //saves the total score, logs it to console, saves it to a string in localstorage to be used on scores page
     var initials = initialEl.value.trim();
     var scoreObj = {
         score: totalScore,
@@ -130,11 +130,11 @@ function saveScore(){
     console.log(highscores);
     highscores.push(scoreObj);
     localStorage.setItem("highscores", JSON.stringify(highscores));
-    // location.reload()
+    submitButton.disabled = true;  //submit button can only be clicked once
 }
 
 
-function goBack(){
+function goBack(){ //starts the quiz over without having to refresh or go to high scores page
     window.location.reload();
 }
 submitButton.addEventListener("click", saveScore);

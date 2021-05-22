@@ -1,4 +1,6 @@
-
+*{
+    margin:2%;
+}
 header p{
     margin-top:0px;
     float:right;
@@ -39,6 +41,7 @@ li {
     font-size: 18px;
     color: white;
     text-align: center;
+    list-style-type: none;
 }
 #wrongRight{
     margin: auto;
@@ -48,7 +51,7 @@ li {
 #info{
     /* margin:auto; */
     text-align: center;
-    font-size: 48px;
+    font-size: 44px;
 }
 .highscores{
     margin:auto;
@@ -69,19 +72,26 @@ li {
     display:none;
 }
 
-/* ul{
-    background-color: black;
-    margin: auto;
-    margin-bottom: 10px;
-    padding: 5px;
-    width: 50%;
-    font-size: 18px;
-    color: white;
-    text-align: center;
-} */
 #clear{
-    margin: auto;
+    width: 10%;
+    height: 50px;
+    margin-left: 45%;
 }
-.endgame{
+#endgame{
+    margin-left: 40%;
     align-items: center;
+}
+#finalscore{
+    font-size: 32px;
+    margin-left: -20%;
+}
+#initials{
+    margin: 40px;
+    margin-right: 0px;
+}
+#submit{
+    margin-right:0%;
+}
+#goback{
+    margin-left:0%;
 }
